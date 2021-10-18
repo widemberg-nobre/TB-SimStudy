@@ -63,7 +63,7 @@ for(k in 2){
     SMD.X1[[k]][w,3] <- smd.weighted(ps=prop.score.2[[w]],x=X1,z=data[[k]][[w]]$Z)
     SMD.X2[[k]][w,3] <- smd.weighted(ps=prop.score.2[[w]],x=X2,z=data[[k]][[w]]$Z)
     max.Rhat.Zre[k,w] <- max(stan_rhat(fitExp.2)$`data`)
-    if(w %in% seq(50,nsim,len=20)){print(irep);print(timestamp());save.image("/project/6003552/widloro/git/TBsim_binbin_case2Exp.RData")}
+    if(w %in% seq(50,nsim,len=20)){print(w);print(timestamp());save.image("/project/6003552/widloro/git/TBsim_binbin_case2Exp.RData")}
   }
   
   object2 <- stan_model("/project/6003552/widloro/git/exposure_bernoulli_model.stan")
@@ -77,6 +77,6 @@ for(k in 2){
     SMD.X2[[k]][w,1] <- smd.weighted(ps=rep(1,m*nrep),x=X2,z=data[[k]][[w]]$Z)
     SMD.X2[[k]][w,2] <- smd.weighted(ps=prop.score.1[[w]],x=X2,z=data[[k]][[w]]$Z)
     max.Rhat.Z[k,w] <- max(stan_rhat(fitExp.1)$`data`)
-    if(w %in% seq(50,nsim,len=20)){print(irep);print(timestamp());save.image("/project/6003552/widloro/git/TBsim_binbin_case2Exp.RData")}
+    if(w %in% seq(50,nsim,len=20)){print(w);print(timestamp());save.image("/project/6003552/widloro/git/TBsim_binbin_case2Exp.RData")}
   }
 }
