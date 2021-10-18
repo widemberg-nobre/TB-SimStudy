@@ -84,4 +84,4 @@ for(k in 1){
     if(w %in% seq(50,nsim,len=20)){print(w);print(timestamp());save.image("/project/6003552/widloro/git/TBsim_binbin_case1Exp.RData")}
   }
 }
-
+save.image("/project/6003552/widloro/git/TBsim_binbin_case1Exp.RData")
