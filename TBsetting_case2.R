@@ -60,7 +60,7 @@ for(k in 2){
                            X=cbind(1,X1,X2),q=dim(cbind(1,X1,X2))[2])
     ############################ ajuste ######################################
     fitExp.2 <- sampling(object1, data = data[[k]][[w]],chains = 2,
-                         iter = 8000)
+                         iter = 20000)
     chain.al <- extract(fitExp.2,'alpha')
     chain.re <- extract(fitExp.2,'indRE')
     prop.score.2[[w]] <- expit(c(cbind(1,X1,X2)%*%apply(chain.al$alpha,2,mean) + apply(chain.re$indRE,2,mean)[index]))
