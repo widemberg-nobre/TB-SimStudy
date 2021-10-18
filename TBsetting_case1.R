@@ -36,7 +36,7 @@ seeds <- c()
 data <- replicate(3,data.frame())
 max.Rhat.Zre <- max.Rhat.Z <- matrix(NA,3,nsim)
 
-for(k in 1:3){
+for(k in 1){
   data[[k]] <- replicate(1000,data.frame())
   SMD.X1[[k]] <- SMD.X2[[k]] <- matrix(NA,nsim,3)
   object1 <- stan_model("exposure_bernoulli_model_re.stan")
@@ -57,9 +57,10 @@ for(k in 1:3){
     chain.al <- extract(fitExp.2,'alpha')
     chain.re <- extract(fitExp.2,'indRE')
     prop.score.2[[w]] <- expit(c(cbind(1,X1,X2)%*%apply(chain.al$alpha,2,mean) + apply(chain.re$indRE,2,mean)[index]))
-    SMD.X1[[k]][w,3] <- smd.weighted(ps=prop.score.2[[w]],x=X1,z=Z)
-    SMD.X2[[k]][w,3] <- smd.weighted(ps=prop.score.2[[w]],x=X2,z=Z)
+    SMD.X1[[k]][w,3] <- smd.weighted(ps=prop.score.2[[w]],x=X1,z=data[[k]][[w]]$Z)
+    SMD.X2[[k]][w,3] <- smd.weighted(ps=prop.score.2[[w]],x=X2,z=data[[k]][[w]]$Z)
     max.Rhat.Zre[k,w] <- max(stan_rhat(fitExp.2)$`data`)
+    if(w %in% seq(50,nsim,len=20)){print(irep);print(timestamp());save.image("/project/6003552/widloro/git/TBsim_binbin_case1Exp.RData")}
   }
   
   object2 <- stan_model("exposure_bernoulli_model.stan")
@@ -68,11 +69,12 @@ for(k in 1:3){
                      iter = 4000)
     chain.al <- extract(fitExp.1,'alpha')
     prop.score.1[[w]] <- expit(c(cbind(1,X1,X2)%*%apply(chain.al$alpha,2,mean))) 
-    SMD.X1[[k]][w,1] <- smd.weighted(ps=rep(1,m*nrep),x=X1,z=Z)
-    SMD.X1[[k]][w,2] <- smd.weighted(ps=prop.score.1[[w]],x=X1,z=Z)
-    SMD.X2[[k]][w,1] <- smd.weighted(ps=rep(1,m*nrep),x=X2,z=Z)
-    SMD.X2[[k]][w,2] <- smd.weighted(ps=prop.score.1[[w]],x=X2,z=Z)
+    SMD.X1[[k]][w,1] <- smd.weighted(ps=rep(1,m*nrep),x=X1,z=data[[k]][[w]]$Z)
+    SMD.X1[[k]][w,2] <- smd.weighted(ps=prop.score.1[[w]],x=X1,z=data[[k]][[w]]$Z)
+    SMD.X2[[k]][w,1] <- smd.weighted(ps=rep(1,m*nrep),x=X2,z=data[[k]][[w]]$Z)
+    SMD.X2[[k]][w,2] <- smd.weighted(ps=prop.score.1[[w]],x=X2,z=data[[k]][[w]]$Z)
     max.Rhat.Z[k,w] <- max(stan_rhat(fitExp.1)$`data`)
+    if(w %in% seq(50,nsim,len=20)){print(irep);print(timestamp());save.image("/project/6003552/widloro/git/TBsim_binbin_case1Exp.RData")}
   }
 }
 
