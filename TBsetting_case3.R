@@ -44,7 +44,10 @@ for(k in 3){
   data[[k]] <- replicate(1000,data.frame())
   SMD.X1[[k]] <- SMD.X2[[k]] <- matrix(NA,nsim,3)
   object1 <- stan_model("/project/6003552/widloro/git/exposure_bernoulli_model_re.stan")
-  for(w in 1:nsim){
+  load("/project/6003552/widloro/git/TBsim_binbin_case3Exp.RData")
+  indexes <- which(max.Rhat.Zre[1,] > 1.06)
+  set.seed(123456)
+  for(w in indexes){
     a <- rnorm(m,0,1)
     if(k == 1) {b <- rnorm(m,0,1)}
     if(k == 2) {ab <- rmnorm(m,rep(0,2),matrix(c(1,.5,.5,1),2,2,byrow=TRUE));
