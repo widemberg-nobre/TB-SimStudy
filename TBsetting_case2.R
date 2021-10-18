@@ -1,6 +1,3 @@
-Sys.setenv(DOWNLOAD_STATIC_LIBV8 = 1) # only necessary for Linux without the nodejs library / headers
-install.packages("rstan", repos = "https://cloud.r-project.org/", dependencies = TRUE)
-
 require(rstan)
 install.packages("mnormt", repos = "https://cloud.r-project.org/")
 require(mnormt)
@@ -45,7 +42,7 @@ for(k in 2){
   SMD.X1[[k]] <- SMD.X2[[k]] <- matrix(NA,nsim,3)
   object1 <- stan_model("/project/6003552/widloro/git/exposure_bernoulli_model_re.stan")
   load("/project/6003552/widloro/git/TBsim_binbin_case2Exp.RData")
-  indexes <- which(max.Rhat.Zre[1,] > 1.06)
+  indexes <- which(max.Rhat.Zre[2,] > 1.06)
   set.seed(123456)
   for(w in indexes){
     a <- rnorm(m,0,1)
