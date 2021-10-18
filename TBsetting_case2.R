@@ -71,7 +71,7 @@ for(k in 2){
   }
   
   object2 <- stan_model("/project/6003552/widloro/git/exposure_bernoulli_model.stan")
-  for(w in 1:nsim){
+  for(w in indexes){
     fitExp.1 <- sampling(object2, data = data[[k]][[w]],  chains = 2,
                      iter = 4000)
     chain.al <- extract(fitExp.1,'alpha')
