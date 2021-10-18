@@ -7,6 +7,8 @@ require(mnormt)
 options(mc.cores = parallel::detectCores())
 rstan_options(auto_write = TRUE)
 
+beta.ests <-  var.beta.ests  <- OddsRatio.ests <- replicate(3,data.frame())
+
 load("/project/6003552/widloro/git/TBsim_binbin_case2Exp.RData")
 
 max.Rhat.Yre1 <- max.Rhat.Yre2 <- matrix(NA,3,nsim)
