@@ -7,7 +7,7 @@
 #SBATCH --mail-user=widemberg@dme.ufrj.br # Send email updates to you or someone else
 #SBATCH --mail-type=ALL          # send an email in all cases (job started, job ended, job aborted)
 
-module load gcc/9.3.0 r/4.1.0
+ml gcc r-bundle-bioconductor
 
 # Export the nodes names. 
 # If all processes are allocated on the same node, NODESLIST contains : node1 node1 node1 node1
