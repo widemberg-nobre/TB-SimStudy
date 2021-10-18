@@ -42,7 +42,7 @@ max.Rhat.Zre <- max.Rhat.Z <- matrix(NA,3,nsim)
 for(k in 2){
   data[[k]] <- replicate(1000,data.frame())
   SMD.X1[[k]] <- SMD.X2[[k]] <- matrix(NA,nsim,3)
-  object1 <- stan_model("exposure_bernoulli_model_re.stan")
+  object1 <- stan_model("/project/6003552/widloro/git/exposure_bernoulli_model_re.stan")
   for(w in 1:nsim){
     a <- rnorm(m,0,1)
     if(k == 1) {b <- rnorm(m,0,1)}
@@ -66,7 +66,7 @@ for(k in 2){
     if(w %in% seq(50,nsim,len=20)){print(irep);print(timestamp());save.image("/project/6003552/widloro/git/TBsim_binbin_case2Exp.RData")}
   }
   
-  object2 <- stan_model("exposure_bernoulli_model.stan")
+  object2 <- stan_model("/project/6003552/widloro/git/exposure_bernoulli_model.stan")
   for(w in 1:nsim){
     fitExp.1 <- sampling(object2, data = data[[k]][[w]],  chains = 2,
                      iter = 4000)
