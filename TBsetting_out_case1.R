@@ -10,7 +10,7 @@ rstan_options(auto_write = TRUE)
 beta.ests <-  var.beta.ests  <- OddsRatio.ests <- replicate(3,data.frame())
 
 
-load("/project/6003552/widloro/git/TBsim_binbin_case1Exp.RData")
+load("/project/6003552/widloro/git/TBsim_binbin_case1Exp_ScenX2.RData")
 
 max.Rhat.Yre1 <- max.Rhat.Yre2 <- matrix(NA,3,nsim)
 
