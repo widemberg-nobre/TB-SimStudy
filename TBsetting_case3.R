@@ -67,7 +67,7 @@ for(k in 3){
     if(w %in% seq(50,nsim,len=20)){print(w);print(timestamp());save.image("/project/6003552/widloro/git/TBsim_binbin_case3Exp_ScenX2.RData")}
   }
   
-  object2 <- stan_model("/project/6003552/widloro/git/exposure_bernoulli_model_ScenX2.stan")
+  object2 <- stan_model("/project/6003552/widloro/git/exposure_bernoulli_model.stan")
   for(w in 1:nsim){
     fitExp.1 <- sampling(object2, data = data[[k]][[w]],  chains = 2,
                      iter = 4000)
