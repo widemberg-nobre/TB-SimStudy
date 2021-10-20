@@ -28,10 +28,10 @@ gamma <- c(1,1,1)
 delta <- c(1,1,1,1)
 index <- rep(1:m,each=nrep)
 betaZ <- 0
-RE_X1 <- rnorm(m,0,.4)
-RE_X2 <- rnorm(m,0,.4)
-X1 <- rnorm(m*nrep,0,.1) + RE_X1[index]
-X2 <- rnorm(m*nrep,0,.1) + RE_X2[index]
+RE_X1 <- rnorm(m,0,1)
+RE_X2 <- rnorm(m,0,1)
+X1 <- rnorm(m*nrep,0,.25) + RE_X1[index]
+X2 <- rnorm(m*nrep,0,.25) + RE_X2[index]
 beta.ests <-  var.beta.ests <- replicate(3,data.frame())
 nsim <- 1000
 prop.score.1 <- prop.score.2 <- replicate(nsim,data.frame())
