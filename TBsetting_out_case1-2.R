@@ -16,7 +16,7 @@ max.Rhat.Yre1 <- max.Rhat.Yre2 <- matrix(NA,3,nsim)
 
 for(k in 1){
   beta.ests[[k]] <- OddsRatio.ests[[k]] <- var.beta.ests[[k]] <-  matrix(NA,nsim,4)
-  object4 <- stan_model(stan_model("/project/6003552/widloro/git/outcome_bernoulli_model.stan"))
+  object4 <- stan_model("/project/6003552/widloro/git/outcome_bernoulli_model.stan")
   for(w in 1:nsim){
     data.3 <- list(N = m*nrep,M=m,I=index, 
                    Z = data[[k]][[w]]$Z, Y = data[[k]][[w]]$Y, 
