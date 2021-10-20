@@ -9,7 +9,7 @@ rstan_options(auto_write = TRUE)
 
 beta.ests <-  var.beta.ests  <- OddsRatio.ests <- replicate(3,data.frame())
 
-load("/project/6003552/widloro/git/TBsim_binbin_case2Exp.RData")
+load("/project/6003552/widloro/git/TBsim_binbin_case2Exp_ScenX2.RData")
 
 max.Rhat.Yre1 <- max.Rhat.Yre2 <- matrix(NA,3,nsim)
 
@@ -43,10 +43,10 @@ for(k in 2){
     
     max.Rhat.Yre1[k,w] <- max(stan_rhat(fitOut3)$`data`)
     max.Rhat.Yre2[k,w] <- max(stan_rhat(fitOut4)$`data`)
-    if(w %in% seq(50,nsim,len=20)){print(w);print(timestamp());save.image("/project/6003552/widloro/git/TBsim_binbin_case2out.RData")}
+    if(w %in% seq(50,nsim,len=20)){print(w);print(timestamp());save.image("/project/6003552/widloro/git/TBsim_binbin_case2out_ScenX2.RData")}
   }
-  save.image("/project/6003552/widloro/git/TBsim_binbin_case2out.RData")
-  object4 <- stan_model(stan_model("/project/6003552/widloro/git/outcome_bernoulli_model.stan"))
+  save.image("/project/6003552/widloro/git/TBsim_binbin_case2out_ScenX2.RData")
+  object4 <- stan_model("/project/6003552/widloro/git/outcome_bernoulli_model.stan")
   for(w in 1:nsim){
     data.3 <- list(N = m*nrep,M=m,I=index, 
                    Z = data[[k]][[w]]$Z, Y = data[[k]][[w]]$Y, 
@@ -72,7 +72,7 @@ for(k in 2){
     OddsRatio.ests[[k]][w,1] <- mean(exp(chain.beta1$beta))
     OddsRatio.ests[[k]][w,2] <- mean(exp(chain.beta2$beta))
     
-    if(w %in% seq(50,nsim,len=20)){print(w);print(timestamp());save.image("/project/6003552/widloro/git/TBsim_binbin_case2out.RData")}
+    if(w %in% seq(50,nsim,len=20)){print(w);print(timestamp());save.image("/project/6003552/widloro/git/TBsim_binbin_case2out_ScenX2.RData")}
   }
 }
-save.image("/project/6003552/widloro/git/TBsim_binbin_case2out.RData")
+save.image("/project/6003552/widloro/git/TBsim_binbin_case2out_ScenX2.RData")
