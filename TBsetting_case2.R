@@ -1,8 +1,3 @@
-Sys.setenv(DOWNLOAD_STATIC_LIBV8 = 1) # only necessary for Linux without the nodejs library / headers
-install.packages("rstan", repos = "https://cloud.r-project.org/", dependencies = TRUE)
-
-require(rstan)
-install.packages("mnormt", repos = "https://cloud.r-project.org/")
 require(mnormt)
 options(mc.cores = parallel::detectCores())
 rstan_options(auto_write = TRUE)
