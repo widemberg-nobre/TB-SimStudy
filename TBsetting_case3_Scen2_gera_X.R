@@ -28,10 +28,6 @@ gamma <- c(1,1,1)
 delta <- c(1,1,1,1)
 index <- rep(1:m,each=nrep)
 betaZ <- 0
-RE_X1 <- rnorm(m,0,1)
-RE_X2 <- rnorm(m,0,1)
-X1 <- rnorm(m*nrep,0,.25) + RE_X1[index]
-X2 <- rnorm(m*nrep,0,.25) + RE_X2[index]
 beta.ests <-  var.beta.ests <- replicate(3,data.frame())
 nsim <- 1000
 prop.score.1 <- prop.score.2 <- replicate(nsim,data.frame())
@@ -43,10 +39,12 @@ max.Rhat.Zre <- max.Rhat.Z <- matrix(NA,3,nsim)
 for(k in 3){
   data[[k]] <- replicate(1000,data.frame())
   SMD.X1[[k]] <- SMD.X2[[k]] <- matrix(NA,nsim,3)
-  load("/project/6003552/widloro/git/TBsim_binbin_case3Exp_ScenX2.RData")
-  indexes <- which(max.Rhat.Zre[3,] > 1.06) 
   object1 <- stan_model("/project/6003552/widloro/git/exposure_bernoulli_model_re.stan")
-  for(w in indexes){
+  for(w in 1:nsim){
+    RE_X1 <- rnorm(m,0,1)
+    RE_X2 <- rnorm(m,0,1)
+    X1 <- rnorm(m*nrep,0,.25) + RE_X1[index]
+    X2 <- rnorm(m*nrep,0,.25) + RE_X2[index]
     a <- rnorm(m,0,1)
     if(k == 1) {b <- rnorm(m,0,1)}
     if(k == 2) {ab <- rmnorm(m,rep(0,2),matrix(c(1,.5,.5,1),2,2,byrow=TRUE));
@@ -59,28 +57,28 @@ for(k in 3){
                            X=cbind(1,X1,X2),q=dim(cbind(1,X1,X2))[2])
     ############################ ajuste ######################################
     fitExp.2 <- sampling(object1, data = data[[k]][[w]],chains = 2,
-                         iter = 8000)
+                         iter = 10000)
     chain.al <- extract(fitExp.2,'alpha')
     chain.re <- extract(fitExp.2,'indRE')
     prop.score.2[[w]] <- expit(c(cbind(1,X1,X2)%*%apply(chain.al$alpha,2,mean) + apply(chain.re$indRE,2,mean)[index]))
     SMD.X1[[k]][w,3] <- smd.weighted(ps=prop.score.2[[w]],x=X1,z=data[[k]][[w]]$Z)
     SMD.X2[[k]][w,3] <- smd.weighted(ps=prop.score.2[[w]],x=X2,z=data[[k]][[w]]$Z)
     max.Rhat.Zre[k,w] <- max(stan_rhat(fitExp.2)$`data`)
-    if(w %in% seq(50,nsim,len=20)){print(w);print(timestamp());save.image("/project/6003552/widloro/git/TBsim_binbin_case3Exp_ScenX2.RData")}
+    if(w %in% seq(50,nsim,len=20)){print(w);print(timestamp());save.image("/project/6003552/widloro/git/TBsim_binbin_case3Exp_Scen2_de_X.RData")}
   }
   
   object2 <- stan_model("/project/6003552/widloro/git/exposure_bernoulli_model.stan")
-  for(w in indexes){
+  for(w in 1:nsim){
     fitExp.1 <- sampling(object2, data = data[[k]][[w]],  chains = 2,
                      iter = 4000)
     chain.al <- extract(fitExp.1,'alpha')
-    prop.score.1[[w]] <- expit(c(cbind(1,X1,X2)%*%apply(chain.al$alpha,2,mean))) 
-    SMD.X1[[k]][w,1] <- smd.weighted(ps=rep(1,m*nrep),x=X1,z=data[[k]][[w]]$Z)
-    SMD.X1[[k]][w,2] <- smd.weighted(ps=prop.score.1[[w]],x=X1,z=data[[k]][[w]]$Z)
-    SMD.X2[[k]][w,1] <- smd.weighted(ps=rep(1,m*nrep),x=X2,z=data[[k]][[w]]$Z)
-    SMD.X2[[k]][w,2] <- smd.weighted(ps=prop.score.1[[w]],x=X2,z=data[[k]][[w]]$Z)
+    prop.score.1[[w]] <- expit(c((data[[k]][[w]]$X)%*%apply(chain.al$alpha,2,mean))) 
+    SMD.X1[[k]][w,1] <- smd.weighted(ps=rep(1,m*nrep),x=(data[[k]][[w]]$X)[,2],z=data[[k]][[w]]$Z)
+    SMD.X1[[k]][w,2] <- smd.weighted(ps=prop.score.1[[w]],x=(data[[k]][[w]]$X)[,2],z=data[[k]][[w]]$Z)
+    SMD.X2[[k]][w,1] <- smd.weighted(ps=rep(1,m*nrep),x=(data[[k]][[w]]$X)[,3],z=data[[k]][[w]]$Z)
+    SMD.X2[[k]][w,2] <- smd.weighted(ps=prop.score.1[[w]],x=(data[[k]][[w]]$X)[,3],z=data[[k]][[w]]$Z)
     max.Rhat.Z[k,w] <- max(stan_rhat(fitExp.1)$`data`)
-    if(w %in% seq(50,nsim,len=20)){print(w);print(timestamp());save.image("/project/6003552/widloro/git/TBsim_binbin_case3Exp_ScenX2.RData")}
+    if(w %in% seq(50,nsim,len=20)){print(w);print(timestamp());save.image("/project/6003552/widloro/git/TBsim_binbin_case3Exp_Scen2_de_X.RData")}
   }
 }
-save.image("/project/6003552/widloro/git/TBsim_binbin_case3Exp_ScenX2.RData")
+save.image("/project/6003552/widloro/git/TBsim_binbin_case3Exp_Scen2_de_X.RData")
