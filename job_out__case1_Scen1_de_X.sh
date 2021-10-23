@@ -15,4 +15,4 @@ ml gcc r-bundle-bioconductor
 # If all processes are allocated on the same node, NODESLIST contains : node1 node1 node1 node1
 # Cut the domain name and keep only the node name
 export R_LIBS=~/local/R_libs/
-R -f TBsetting_out_case1.R
+R -f TBsetting_out_case1_Scen1_de_X.R
