@@ -15,6 +15,7 @@ for(k in 1:3){
   if(k==1){("/project/6003552/widloro/git/TBsim_binbin_case1Exp_Scen2_de_X.RData")}
   if(k==2){("/project/6003552/widloro/git/TBsim_binbin_case2Exp_Scen2_de_X.RData")}
   if(k==3){("/project/6003552/widloro/git/TBsim_binbin_case3Exp_Scen2_de_X.RData")}
+object4 <- stan_model("/project/6003552/widloro/git/outcome_bernoulli_model.stan")
   beta.ests[[k]] <- OddsRatio.ests[[k]] <- var.beta.ests[[k]] <-  matrix(NA,nsim,4)
   for(w in 1:nsim){
     data.3 <- list(N = m*nrep,M=m,I=index, 
