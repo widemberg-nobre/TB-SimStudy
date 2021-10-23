@@ -10,11 +10,12 @@ rstan_options(auto_write = TRUE)
 beta.ests <-  var.beta.ests  <- OddsRatio.ests <- replicate(3,data.frame())
 
 
-load("/project/6003552/widloro/git/TBsim_binbin_case1out_ScenX2.RData")
 
 max.Rhat.Yre1 <- max.Rhat.Yre2 <- matrix(NA,3,nsim)
 
 for(k in 1){
+  beta.ests[[k]] <- OddsRatio.ests[[k]] <- var.beta.ests[[k]] <-  matrix(NA,nsim,4)
+  load("/project/6003552/widloro/git/TBsim_binbin_case1out_ScenX2.RData")
   object3 <- stan_model("/project/6003552/widloro/git/outcome_bernoulli_model_re.stan")
   for(w in 1:nsim){
     data.3 <- list(N = m*nrep,M=m,I=index, 
@@ -46,4 +47,4 @@ for(k in 1){
     if(w %in% seq(50,nsim,len=20)){print(w);print(timestamp());save.image("/project/6003552/widloro/git/TBsim_binbin_case1out_ScenX2-1.RData")}
   }
 }
-save.image("/project/6003552/widloro/git/TBsim_binbin_case1out_ScenX2.RData")
+save.image("/project/6003552/widloro/git/TBsim_binbin_case1out_ScenX2-1.RData")
