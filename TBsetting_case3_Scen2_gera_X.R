@@ -37,36 +37,36 @@ data <- replicate(3,data.frame())
 max.Rhat.Zre <- max.Rhat.Z <- matrix(NA,3,nsim)
 
 for(k in 3){
-  data[[k]] <- replicate(1000,data.frame())
-  SMD.X1[[k]] <- SMD.X2[[k]] <- matrix(NA,nsim,3)
-  object1 <- stan_model("/project/6003552/widloro/git/exposure_bernoulli_model_re.stan")
-  for(w in 1:nsim){
-    RE_X1 <- rnorm(m,0,1)
-    RE_X2 <- rnorm(m,0,1)
-    X1 <- rnorm(m*nrep,0,.25) + RE_X1[index]
-    X2 <- rnorm(m*nrep,0,.25) + RE_X2[index]
-    a <- rnorm(m,0,1)
-    if(k == 1) {b <- rnorm(m,0,1)}
-    if(k == 2) {ab <- rmnorm(m,rep(0,2),matrix(c(1,.5,.5,1),2,2,byrow=TRUE));
-    a <- ab[,1];b=ab[,2]}
-    if(k == 3) {b <- a}
-    Z <- rbinom(m*nrep,1,expit(cbind(1,X1,X2)%*%gamma + a[index])) 
-    muY <- Z * betaZ + cbind(1,X1,X2,X1*X2)%*%delta + b[index] + rnorm(m*nrep)
-    Y <-  rbinom(m*nrep,1,expit(muY)) 
-    data[[k]][[w]] <- list(N = m*nrep,M=m,I=index, Z = Z, Y = Y, 
-                           X=cbind(1,X1,X2),q=dim(cbind(1,X1,X2))[2])
+#  data[[k]] <- replicate(1000,data.frame())
+#  SMD.X1[[k]] <- SMD.X2[[k]] <- matrix(NA,nsim,3)
+#  object1 <- stan_model("/project/6003552/widloro/git/exposure_bernoulli_model_re.stan")
+#  for(w in 1:nsim){
+#    RE_X1 <- rnorm(m,0,1)
+#    RE_X2 <- rnorm(m,0,1)
+#    X1 <- rnorm(m*nrep,0,.25) + RE_X1[index]
+#    X2 <- rnorm(m*nrep,0,.25) + RE_X2[index]
+#    a <- rnorm(m,0,1)
+#    if(k == 1) {b <- rnorm(m,0,1)}
+#    if(k == 2) {ab <- rmnorm(m,rep(0,2),matrix(c(1,.5,.5,1),2,2,byrow=TRUE));
+#    a <- ab[,1];b=ab[,2]}
+#    if(k == 3) {b <- a}
+#    Z <- rbinom(m*nrep,1,expit(cbind(1,X1,X2)%*%gamma + a[index])) 
+#    muY <- Z * betaZ + cbind(1,X1,X2,X1*X2)%*%delta + b[index] + rnorm(m*nrep)
+#    Y <-  rbinom(m*nrep,1,expit(muY)) 
+#    data[[k]][[w]] <- list(N = m*nrep,M=m,I=index, Z = Z, Y = Y, 
+#                           X=cbind(1,X1,X2),q=dim(cbind(1,X1,X2))[2])
     ############################ ajuste ######################################
-    fitExp.2 <- sampling(object1, data = data[[k]][[w]],chains = 2,
-                         iter = 10000)
-    chain.al <- extract(fitExp.2,'alpha')
-    chain.re <- extract(fitExp.2,'indRE')
-    prop.score.2[[w]] <- expit(c(cbind(1,X1,X2)%*%apply(chain.al$alpha,2,mean) + apply(chain.re$indRE,2,mean)[index]))
-    SMD.X1[[k]][w,3] <- smd.weighted(ps=prop.score.2[[w]],x=X1,z=data[[k]][[w]]$Z)
-    SMD.X2[[k]][w,3] <- smd.weighted(ps=prop.score.2[[w]],x=X2,z=data[[k]][[w]]$Z)
-    max.Rhat.Zre[k,w] <- max(stan_rhat(fitExp.2)$`data`)
-    if(w %in% seq(50,nsim,len=20)){print(w);print(timestamp());save.image("/project/6003552/widloro/git/TBsim_binbin_case3Exp_Scen2_de_X.RData")}
-  }
-  
+#    fitExp.2 <- sampling(object1, data = data[[k]][[w]],chains = 2,
+#                         iter = 10000)
+#    chain.al <- extract(fitExp.2,'alpha')
+#    chain.re <- extract(fitExp.2,'indRE')
+#    prop.score.2[[w]] <- expit(c(cbind(1,X1,X2)%*%apply(chain.al$alpha,2,mean) + apply(chain.re$indRE,2,mean)[index]))
+#    SMD.X1[[k]][w,3] <- smd.weighted(ps=prop.score.2[[w]],x=X1,z=data[[k]][[w]]$Z)
+#    SMD.X2[[k]][w,3] <- smd.weighted(ps=prop.score.2[[w]],x=X2,z=data[[k]][[w]]$Z)
+#    max.Rhat.Zre[k,w] <- max(stan_rhat(fitExp.2)$`data`)
+#    if(w %in% seq(50,nsim,len=20)){print(w);print(timestamp());save.image("/project/6003552/widloro/git/TBsim_binbin_case3Exp_Scen2_de_X.RData")}
+#  }
+ load("/project/6003552/widloro/git/TBsim_binbin_case3Exp_Scen2_de_X.RData")
   object2 <- stan_model("/project/6003552/widloro/git/exposure_bernoulli_model.stan")
   for(w in 1:nsim){
     fitExp.1 <- sampling(object2, data = data[[k]][[w]],  chains = 2,
